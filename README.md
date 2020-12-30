@@ -1,2 +1,6 @@
-# quote_proto
-proto files for quote demo
+# Proto files
+
+## Install dependencies
+    $ make install
+## Compile Proto files
+    $ make proto

@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package quote;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "ps_gateway/proto/quote/v1;quote";
+
+// These annotations are used when generating the OpenAPI file.
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    version: "1.0";
+  };
+  external_docs: {
+    url: "https://ps_boiler/webserver";
+    description: "gRPC-gateway boilerplate";
+  }
+  schemes: HTTPS;
+  schemes: HTTP;
+  consumes: "application/json";
+  produces: "application/json";
+  security_definitions: {
+    security: {
+      key: "bearer"
+      value: {
+        type: TYPE_API_KEY
+        in: IN_HEADER
+        name: "Authorization"
+        description: "Authentication token, prefixed by Bearer: Bearer <token>"
+      }
+    }
+  }
+  security: {
+    security_requirement: {
+      key: "bearer"
+    }
+  }
+};
+
+service QuoteService {
+  rpc GetQuote(GetQuoteRequest) returns (GetQuoteResponse) {
+    option (google.api.http) = {get: "/v1/quote"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Quote"
+      description: "Get Quotes from server"
+      tags: "Quotes"
+    };
+  }
+  rpc CreateQuote(CreateQuoteRequest) returns (CreateQuoteResponse) {
+    option (google.api.http) = {post: "/v1/quote" body: "*"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create Quote"
+      description: "Create Quotes using this call"
+      tags: "Quotes"
+    };
+  }
+  rpc UpdateQuote(UpdateQuoteRequest) returns (UpdateQuoteResponse) {
+    option (google.api.http) = {put: "/v1/quote" body: "*"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Quote"
+      description: "Update Quotes using this call"
+      tags: "Quotes"
+    };
+  }
+  rpc DeleteQuote(DeleteQuoteRequest) returns (DeleteQuoteResponse) {
+    option (google.api.http) = {delete: "/v1/quote" body: "*"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete Quote"
+      description: "Delete Quotes from server memory"
+      tags: "Quotes"
+    };
+  }
+}
+
+message Quote {
+  string quote_id = 1;
+  string message = 2;
+}
+
+message GetQuoteRequest {
+  string quote_id = 1;
+  string message = 2;
+}
+
+message GetQuoteResponse {
+  repeated Quote quotes = 1;
+}
+
+message CreateQuoteRequest {
+  string message = 1;
+}
+
+message CreateQuoteResponse {
+  bool status = 1;
+  string quote_id = 2;
+  string message = 3;
+}
+
+message UpdateQuoteRequest {
+  string quote_id = 1;
+  string message = 2;
+}
+
+message UpdateQuoteResponse {
+  bool status = 1;
+  string message = 2;
+}
+
+message DeleteQuoteRequest {
+  string quote_id = 1;
+}
+
+message DeleteQuoteResponse {
+  bool status = 1;
+  string message = 2;
+}
